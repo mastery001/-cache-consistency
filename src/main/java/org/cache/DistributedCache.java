@@ -22,7 +22,6 @@ public interface DistributedCache<K , V>{
 	 */
 	V set(K key , V value);
 	
-	
 	/**
 	 * 得到对应键的值(可重复读)
 	 * @param key
@@ -38,13 +37,5 @@ public interface DistributedCache<K , V>{
 	 * 2016年2月25日 下午4:33:12
 	 */
 	boolean containsKey(K key);
-	
-	/**
-	 * 获得消息发布者
-	 * @return
-	 * 2016年2月25日 下午5:25:08
-	 */
-	TopicPublisher<V> getPublisher();
-	
 	
 }

@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.cache.TopicPublisher.Entry;
+
 public abstract class AbstractDistributedCache<K, V> implements DistributedCache<K, V> {
 
 	protected class CacheObject<K2, V2> {
@@ -26,7 +28,9 @@ public abstract class AbstractDistributedCache<K, V> implements DistributedCache
 		public V2 set(V2 value) {
 			writeLock.lock();
 			try {
-				this.cacheObject = value;
+				if(cacheObject != value) {
+					this.cacheObject = value;
+				}
 				return cacheObject;
 			} finally {
 				writeLock.unlock();
@@ -50,6 +54,8 @@ public abstract class AbstractDistributedCache<K, V> implements DistributedCache
 	}
 
 	protected final ConcurrentMap<K, CacheObject<K, V>> cacheMap;
+	
+	protected TopicPublisher<K , V> topicPublisher;
 
 	protected int cacheSize; // 缓存大小， 0 - 无限制
 
@@ -85,6 +91,19 @@ public abstract class AbstractDistributedCache<K, V> implements DistributedCache
 
 	@Override
 	public V set(K key, V value) {
+		V retVal = set0(key, value);
+		topicPublisher.publish(new Entry<K , V>(key , value));
+		return retVal;
+	}
+	
+	/**
+	 * 只做添加操作而不发布消息至redis队列
+	 * @time 2016年2月25日下午10:41:07
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public V set0(K key, V value) {
 		CacheObject<K,V> co = new CacheObject<K,V>(key);
 		CacheObject<K,V> oldCo = cacheMap.putIfAbsent(key, co);
 		V retVal ;
