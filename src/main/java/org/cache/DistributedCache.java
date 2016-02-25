@@ -45,4 +45,6 @@ public interface DistributedCache<K , V>{
 	 * 2016年2月25日 下午5:25:08
 	 */
 	TopicPublisher<V> getPublisher();
+	
+	
 }

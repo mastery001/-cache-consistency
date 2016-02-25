@@ -1,6 +1,7 @@
 package org.cache.support;
 
 import org.cache.TopicPublisher;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * redis消息发布者
@@ -10,9 +11,12 @@ import org.cache.TopicPublisher;
  */
 class RedisTopicPublisher<V> implements TopicPublisher<V>{
 
+	private final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+	
 	@Override
 	public void publish(V value) {
-			
+		redisTemplate.convertAndSend("", value);
 	}
+	
 
 }
