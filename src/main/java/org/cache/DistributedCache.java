@@ -6,6 +6,7 @@ package org.cache;
  * @author zouziwen
  *
  * 2016年2月25日 下午4:18:35
+ * @since 0.0.1
  */
 public interface DistributedCache<K , V>{
 

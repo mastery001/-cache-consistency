@@ -1,13 +1,10 @@
 package org.cache.support;
 
+import org.cache.DistributedCache;
 import org.cache.TopicPublisher.Entry;
-import org.cache.config.RedisTopicConfig;
+import org.cache.TopicSubscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.serializer.SerializationException;
 
 /**
  * redis的订阅者的处理逻辑
@@ -17,34 +14,23 @@ import org.springframework.data.redis.serializer.SerializationException;
  * @param <K>
  * @param <V>
  */
-public class RedisTopicSubscribe<K, V> implements MessageListener {
-
-	/**
-	 * 维持redis的本地缓存
-	 */
-	private final RedisDistributedCache<K, V> cache;
+class RedisTopicSubscribe<K, V> extends TopicSubscribe<K, V> {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-
-	public RedisTopicSubscribe(RedisDistributedCache<K, V> cache) {
-		this.cache = cache;
-		RedisTopicConfig.getRedisMessageContainer().addMessageListener(this,
-				new ChannelTopic(RedisTopicConfig.getTopicName()));
+	
+	public RedisTopicSubscribe(DistributedCache<K, V> cache) {
+		super(cache);
 	}
 
-	@SuppressWarnings("unchecked")
+	public void handleMessage(Entry<K , V> entry) {
+		logger.info("entry is {}" ,entry);
+		// 更新缓存
+		getCache().set0(entry.key(), entry.value());
+	}
+
 	@Override
-	public void onMessage(Message message, byte[] pattern) {
-		try {
-			// 得到消息体
-			Entry<K, V> entry = (Entry<K, V>) RedisTopicConfig.getRedisTemplate().getValueSerializer()
-					.deserialize(message.getBody());
-			System.out.println(entry);
-			// 更新缓存
-			cache.set0(entry.key(), entry.value());
-		} catch (SerializationException e) {
-			logger.info("deserialize " + message + "error ; exception is {}", e);
-		}
+	protected RedisDistributedCache<K, V> getCache() {
+		return (RedisDistributedCache<K, V>) super.getCache();
 	}
 
 }

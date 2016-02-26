@@ -1,10 +1,8 @@
 package org.cache.support;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 import org.cache.TopicPublisher;
 import org.cache.config.RedisTopicConfig;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -20,24 +18,15 @@ class RedisTopicPublisher<K, V> implements TopicPublisher<K, V> {
 
 	private final String topicName;
 
-	private Executor executor = Executors.newCachedThreadPool();
-
 	public RedisTopicPublisher() {
 		redisTemplate = RedisTopicConfig.getRedisTemplate();
-		topicName = RedisTopicConfig.getTopicName();
+		topicName = RedisTopicConfig.getTopic().getTopic();
 	}
 
 	@Override
 	public void publish(final Entry<K, V> value) {
-		executor.execute(new Runnable() {
-
-			@Override
-			public void run() {
-				redisTemplate.convertAndSend(topicName, value);
-			}
-
-		});
-
+		LoggerFactory.getLogger(getClass()).info("publish message is {} , and connection status is {}" , value , !redisTemplate.getConnectionFactory().getConnection().isClosed());
+		redisTemplate.convertAndSend(topicName, value);
 	}
 
 }

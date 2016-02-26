@@ -18,6 +18,8 @@
 		<constructor-arg name="topicName" value="topic.service.cache"></constructor-arg>
 		<constructor-arg name="connectionFactory" ref="jedisConnectionFactory"></constructor-arg>
 	</bean>
+<!-- 	
+	<bean id="topicMessageListener" class="org.cache.support.RedisTopicSubscribe" ></bean>
 	
 	<bean id="topicContainer"
 		class="org.springframework.data.redis.listener.RedisMessageListenerContainer"
@@ -29,7 +31,16 @@
 				<property name="poolSize" value="3"></property>
 			</bean>
 		</property>
-	</bean>
+		<property name="messageListeners">
+			<map>
+				<entry key-ref="topicMessageListener">
+					<bean class="org.springframework.data.redis.listener.ChannelTopic">
+						<constructor-arg value="topic.service.cache" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean> -->
 	
 
 	<!-- ios连接工厂配置 -->

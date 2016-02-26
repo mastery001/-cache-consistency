@@ -2,6 +2,8 @@ package org.cache.support;
 
 import org.cache.AbstractDistributedCache;
 import org.cache.DistributedCache;
+import org.cache.TopicPublisher;
+import org.cache.TopicSubscribe;
 
 /**
  * 基于redis的分布式缓存
@@ -12,8 +14,7 @@ import org.cache.DistributedCache;
  */
 public class RedisDistributedCache<K, V> extends AbstractDistributedCache<K, V> implements DistributedCache<K, V> {
 
-	@SuppressWarnings("unused")
-	private final RedisTopicSubscribe<K, V> topicSubscribe;
+	//private final RedisTopicSubscribe<K, V> topicSubscribe;
 
 	public RedisDistributedCache() {
 		this(DEFAULT_INITIAL_CAPACITY);
@@ -21,8 +22,16 @@ public class RedisDistributedCache<K, V> extends AbstractDistributedCache<K, V> 
 
 	public RedisDistributedCache(int initialCapacity) {
 		super(initialCapacity);
-		topicPublisher = new RedisTopicPublisher<K , V>();
-		topicSubscribe = new RedisTopicSubscribe<K, V>(this);
+	}
+
+	@Override
+	protected TopicPublisher<K, V> getTopicPublisher() {
+		return new RedisTopicPublisher<K , V>();
+	}
+
+	@Override
+	protected TopicSubscribe<K, V> getTopicSubscribe() {
+		return new RedisTopicSubscribe<K, V>(this);
 	}
 
 }

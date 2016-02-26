@@ -1,0 +1,2 @@
+#0.0.1 version
+	1.定义缓存DistributedCache接口以及初步实现了本地缓存的一致性的基本功能
