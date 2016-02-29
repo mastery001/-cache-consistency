@@ -1,4 +1,4 @@
-package org.cache.support;
+package org.cache.redis;
 
 import org.cache.DistributedCache;
 import org.cache.TopicPublisher.Entry;

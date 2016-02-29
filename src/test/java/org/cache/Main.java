@@ -1,6 +1,6 @@
 package org.cache;
 
-import org.cache.support.RedisDistributedCache;
+import org.cache.redis.RedisDistributedCache;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

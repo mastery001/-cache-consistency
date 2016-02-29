@@ -1,4 +1,4 @@
-package org.cache.support;
+package org.cache.redis;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.cache.TopicPublisher;
-import org.cache.config.RedisTopicConfig;
+import org.cache.redis.config.RedisTopicConfig;
 import org.cache.util.NamePreservingRunnable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

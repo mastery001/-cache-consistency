@@ -1,8 +1,8 @@
-package org.cache.config;
+package org.cache.redis.config;
 
 import java.util.concurrent.Executor;
 
-import org.cache.config.spring.SpringBeanManager;
+import org.cache.util.spring.SpringBeanManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;

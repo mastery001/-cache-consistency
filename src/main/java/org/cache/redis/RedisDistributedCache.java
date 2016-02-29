@@ -1,4 +1,4 @@
-package org.cache.support;
+package org.cache.redis;
 
 import org.cache.AbstractDistributedCache;
 import org.cache.DistributedCache;

@@ -1,7 +1,7 @@
 package org.cache;
 
 import org.cache.TopicPublisher.Entry;
-import org.cache.config.RedisTopicConfig;
+import org.cache.redis.config.RedisTopicConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
