@@ -23,7 +23,7 @@ class RedisTopicSubscribe<K, V> extends TopicSubscribe<K, V> {
 	}
 
 	public void handleMessage(Entry<K , V> entry) {
-		logger.info("entry is {}" ,entry);
+		logger.info("received message  is {}" ,entry);
 		// 更新缓存
 		getCache().set0(entry.key(), entry.value());
 	}

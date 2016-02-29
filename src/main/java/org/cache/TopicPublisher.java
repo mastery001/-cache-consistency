@@ -1,6 +1,7 @@
 package org.cache;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 消息发布者
@@ -16,6 +17,13 @@ public interface TopicPublisher<K , V> {
 	 * 2016年2月25日 下午5:23:53
 	 */
 	void publish(Entry<K , V> value);
+	
+	/**
+	 * 获取所有已经发布至远端的Topic
+	 * @return
+	 * 2016年2月29日 上午11:19:14
+	 */
+	List<Entry<K , V>> topics();
 	
 	/**
 	 * 发布的消息格式，键值对

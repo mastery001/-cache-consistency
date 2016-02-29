@@ -31,6 +31,12 @@ public abstract class TopicSubscribe<K , V> extends MessageListenerAdapter {
 		setSerializer(new JdkSerializationRedisSerializer());
 		afterPropertiesSet();
 		RedisTopicConfig.getRedisMessageContainer().addMessageListener(this,RedisTopicConfig.getTopic());
+		// 当消费者创建便自动将缓存同步
+		try {
+			cache.synchronize();
+		} catch (Exception e) {
+			logger.info("cache synchronized failed, exception is {}" , e);
+		}
 	}
 
 	/**

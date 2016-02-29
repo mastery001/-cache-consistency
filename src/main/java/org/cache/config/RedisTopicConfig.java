@@ -4,6 +4,7 @@ import java.util.concurrent.Executor;
 
 import org.cache.config.spring.SpringBeanManager;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,7 +15,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.Topic;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-public final class RedisTopicConfig implements ApplicationContextAware {
+public final class RedisTopicConfig implements ApplicationContextAware , InitializingBean {
 
 	private static Topic topic;
 
@@ -46,7 +47,6 @@ public final class RedisTopicConfig implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		beanManager = new SpringBeanManager(applicationContext);
-		AutoConfigBean.config();
 	}
 
 	public static RedisConnectionFactory getConnectionFactory() {
@@ -84,5 +84,10 @@ public final class RedisTopicConfig implements ApplicationContextAware {
 			return (RedisTemplate<String, Object>) beanManager.registerBean(beanDefinition);
 		
 		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		AutoConfigBean.config();
 	}
 }

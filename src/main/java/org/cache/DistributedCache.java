@@ -31,6 +31,14 @@ public interface DistributedCache<K , V>{
 	 */
 	V get(K key);
 	
+	
+	/**
+	 * 同步远程缓存至本地
+	 * @return
+	 * 2016年2月29日 上午11:09:14
+	 */
+	boolean synchronize();
+	
 	/**
 	 * 判断键是否存在
 	 * @param key

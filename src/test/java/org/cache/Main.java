@@ -11,6 +11,6 @@ public class Main {
 		System.out.println(ac);
 		//System.out.println(ac.getBean(RedisMessageListenerContainer.class));
 		DistributedCache<String, Integer> cache = new RedisDistributedCache<String, Integer>();
-		cache.set("1", 1);
+		cache.set("1", 2);
 	}
 }

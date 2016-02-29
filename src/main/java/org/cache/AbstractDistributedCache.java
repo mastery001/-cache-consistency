@@ -1,5 +1,6 @@
 package org.cache;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.Lock;
@@ -148,6 +149,16 @@ public abstract class AbstractDistributedCache<K, V> implements DistributedCache
 		return get(key) != null;
 	}
 
+	@Override
+	public boolean synchronize() {
+		logger.info("start synchronize");
+		List<Entry<K, V>> list = topicPublisher.topics();
+		for(Entry<K, V> entry : list) {
+			set0(entry.key(), entry.value());
+		}
+		logger.info("end synchronize {} " , list);
+		return true;
+	}
 
 	/**
 	 * 获得消息发布者 , 不能为空

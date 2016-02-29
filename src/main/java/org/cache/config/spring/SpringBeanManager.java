@@ -37,10 +37,24 @@ public class SpringBeanManager {
 		return applicationContext;
 	}
 
-	public Object registerBean(BeanDefinition beanDefinition) {
+	/**
+	 * 注册bean并且得到bean的名称
+	 * @param beanDefinition
+	 * @return
+	 * 2016年2月29日 下午2:01:19
+	 */
+	public String registerBeanWithGeneratedName(BeanDefinition beanDefinition) {
 		String id = BeanRegisterHelper.generateBeanName(beanDefinition, applicationContext);
 		getDefaultBeanFactory().registerBeanDefinition(id, beanDefinition);
-		return applicationContext.getBean(id);
+		return id;
+	}
+
+	public String registerBeanWithGeneratedName(Class<?> cls) {
+		return registerBeanWithGeneratedName(new RootBeanDefinition(cls));
+	}
+
+	public Object registerBean(BeanDefinition beanDefinition) {
+		return applicationContext.getBean(registerBeanWithGeneratedName(beanDefinition));
 	}
 
 	public Object registerBean(Class<?> cls) {
